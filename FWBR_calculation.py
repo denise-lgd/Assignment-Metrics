@@ -10,7 +10,16 @@ df_ck_534 = pd.read_csv('results/ckjm/ckjm_5.3.4.csv')
 df_ck_545 = pd.read_csv('results/ckjm/ckjm_5.4.5.csv')
 df_ck_55133 = pd.read_csv('results/ckjm/ckjm_5.5.13.3.csv')
 
+#load layer extractor results
+df_le_506 = pd.read_csv("results/layer_extractor/le-metrics-5.0.6.csv", encoding='UTF-16 LE')
+df_le_513 = pd.read_csv("results/layer_extractor/le-metrics-5.1.3.csv", encoding='UTF-16 LE')
+df_le_521 = pd.read_csv("results/layer_extractor/le-metrics-5.2.1.csv", encoding='UTF-16 LE')
+df_le_534 = pd.read_csv("results/layer_extractor/le-metrics-5.3.4.csv", encoding='UTF-16 LE')
+df_le_545 = pd.read_csv("results/layer_extractor/le-metrics-5.4.5.csv", encoding='UTF-16 LE')
+df_le_55133 = pd.read_csv("results/layer_extractor/le-metrics-5.5.13.3.csv", encoding='UTF-16 LE')
+
 #make list of dataframes to loop over
+le_dataframes = [df_le_506, df_le_513, df_le_521, df_le_534, df_le_545, df_le_55133]
 dataframes = [df_ck_506,df_ck_513,df_ck_521,df_ck_534,df_ck_545,df_ck_55133]
 
 def calculate_FWBR(dataframes):
@@ -47,9 +56,15 @@ def calculate_FWBR_subs(dataframes):
 calculate_FWBR(dataframes)
 calculate_FWBR_subs(dataframes)
 
-print(df_ck_55133.head())
+#print(df_ck_55133.head())
 
+csv_names = ['506_results.csv','513_results.csv','521_results.csv','534_results.csv','545_results.csv','55133_results.csv', ]
 
-
-
-
+# Align and merge data and output results
+for i in range(len(le_dataframes)):
+    df = dataframes[i]
+    le_df = le_dataframes[i]
+    for index, row in df.iterrows():
+        layer = le_df[le_df["ClassName"] == row["ClassName"]]["layer"].values[0]
+        df.at[index, "layer"] = layer
+    df.to_csv('./results/' + csv_names[i])
