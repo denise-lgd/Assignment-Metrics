@@ -42,7 +42,7 @@ def calculate_FWBR_subs(dataframes):
             for index, row in dataframe.iterrows():
                 FWBR = -1 * (8.151 * log(row['CBO']+1,10)) + 1.431 * (log(row['DIT'] +1,10)) -2.788 * (log(row['WMC'] +1,10)) + 2.501 * (log(row['RFC']+1,10)) -0.191 * (log(row['LCOM']+1,10)) -1.242 * (log(row['NOC']+1,10))
                 FWBR_values.append(FWBR)
-            dataframe["FWBR_N"]=FWBR_values
+            dataframe["FWBR_L"]=FWBR_values
 
 calculate_FWBR(dataframes)
 calculate_FWBR_subs(dataframes)
