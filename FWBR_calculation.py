@@ -68,3 +68,41 @@ for i in range(len(le_dataframes)):
         layer = le_df[le_df["ClassName"] == row["ClassName"]]["layer"].values[0]
         df.at[index, "layer"] = layer
     df.to_csv('./results/' + csv_names[i])
+
+
+for i in range(len(dataframes) - 1):
+    version_name_a = csv_names[i]
+    version_name_b = csv_names[i+1]
+
+    version_a = dataframes[i]
+    version_b = dataframes[i+1]
+
+    le_a = le_dataframes[i]
+    le_b = le_dataframes[i+1]
+
+    no_changes_fwbr = 0
+    no_changes_layer = 0
+
+    # Calculate fwbr changes
+    for index, row in version_a.iterrows():
+        fwbr_a = row['FWBR']
+        fwbr_b_entries = version_b[version_b["ClassName"] == row["ClassName"]]["FWBR"]
+
+
+        if len(fwbr_b_entries.values) > 0:
+            if fwbr_a != fwbr_b_entries.values[0]:
+                no_changes_fwbr += 1
+
+    print(version_name_a, version_name_b, no_changes_fwbr)
+
+    # Calculate layer changes
+    for index, row in le_a.iterrows():
+        layer_a = row['layer']
+        layer_b_entries = le_b[le_b["ClassName"] == row["ClassName"]]["layer"]
+
+        if len(layer_b_entries.values) > 0:
+            if  layer_a != layer_b_entries.values[0]:
+                no_changes_layer += 1
+    print(version_name_a, version_name_b, no_changes_layer)
+
+ 
