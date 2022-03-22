@@ -106,3 +106,11 @@ for i in range(len(dataframes) - 1):
     print(version_name_a, version_name_b, no_changes_layer)
 
  
+#calculating min/max values for quiz question 2:
+for dataframe in dataframes:
+    min_max_values = {}
+    for column in ['WMC','DIT','NOC','CBO','RFC','LCOM','CA','NPM']:
+        min_max_values[column] = [min(dataframe[column]),max(dataframe[column])]
+    print(min_max_values)
+for dataframe in le_dataframes:
+    print(min(dataframe['layer']), max(dataframe['layer']))
